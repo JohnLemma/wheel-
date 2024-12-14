@@ -203,6 +203,37 @@
                 btn.classList.remove('selected'));
             document.getElementById('place-bet').disabled = true;
         }
+                // Add this function to your index.html
+        async function getGameState() {
+            try {
+                const response = await fetch(`${API_URL}/api/game-state`);
+                const data = await response.json();
+                console.log('Game State Data:', data); // Debug log
+                
+                // Update winning number
+                const winningDisplay = document.getElementById('winning-number-display');
+                if (data.winningNumber) {
+                    winningDisplay.textContent = data.winningNumber;
+                    console.log('Winning Number:', data.winningNumber); // Debug log
+                }
+                
+                // Update other UI
+                document.getElementById('pot-amount').textContent = data.pot;
+                document.getElementById('player-count').textContent = data.playerCount;
+                
+                // Update number selections
+                data.numberSelections.forEach((count, index) => {
+                    const button = document.querySelector(`[data-number="${index + 1}"]`);
+                    const countDisplay = button.querySelector('.player-count');
+                    countDisplay.textContent = count;
+                });
+            } catch (error) {
+                console.error('Error fetching game state:', error);
+            }
+        }
+
+        // Add interval to update game state regularly
+        setInterval(getGameState, 1000);
         // Handle bet placement
         document.getElementById('place-bet').addEventListener('click', () => {
             if (selectedNumber) {
