@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: wheel-game-server
+    env: node
+    buildCommand: yarn install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
