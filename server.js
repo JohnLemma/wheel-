@@ -10,12 +10,14 @@ app.use(cors({
 app.use(express.json());
 
 // Game state
+// Update gameState object
 let gameState = {
     currentPot: 0,
     players: {},
     numberSelections: Array(10).fill(0),
     roundActive: false,
-    timeRemaining: 30
+    timeRemaining: 30,
+    winningNumber: '-' // Add this line
 };
 
 // API Endpoints
@@ -54,16 +56,17 @@ app.post('/api/place-bet', (req, res) => {
     }
 });
 
+// Update the game-state endpoint
 app.get('/api/game-state', (req, res) => {
     res.json({
         pot: gameState.currentPot,
         playerCount: Object.keys(gameState.players).length,
         numberSelections: gameState.numberSelections,
         roundActive: gameState.roundActive,
-        timeRemaining: gameState.timeRemaining
+        timeRemaining: gameState.timeRemaining,
+        winningNumber: gameState.winningNumber // Add this line
     });
 });
-
 // Game Logic
 function startNewRound() {
     gameState.roundActive = true;
@@ -71,8 +74,10 @@ function startNewRound() {
     console.log('New round started');
 }
 
+// Update the endRound function
 function endRound() {
     const winningNumber = Math.floor(Math.random() * 10) + 1;
+    gameState.winningNumber = winningNumber; // Add this line
     console.log('Winning number:', winningNumber);
 
     // Find winners
@@ -87,17 +92,18 @@ function endRound() {
         });
     }
 
-    // Reset game state
-    gameState = {
-        currentPot: 0,
-        players: {},
-        numberSelections: Array(10).fill(0),
-        roundActive: false,
-        timeRemaining: 30
-    };
-
-    // Start new round after a short delay
-    setTimeout(startNewRound, 5000);
+    // Reset game state after 5 seconds
+    setTimeout(() => {
+        gameState = {
+            currentPot: 0,
+            players: {},
+            numberSelections: Array(10).fill(0),
+            roundActive: false,
+            timeRemaining: 30,
+            winningNumber: '-' // Add this line
+        };
+        startNewRound();
+    }, 5000);
 }
 
 // Game Timer
