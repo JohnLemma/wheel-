@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: ['https://JohnLemma.github.io', 'https://t.me'],
+    origin: '*',
     methods: ['GET', 'POST'],
     credentials: true
 }));
