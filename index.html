@@ -96,25 +96,33 @@
         .place-bet:disabled {
             opacity: 0.5;
         }
-        .selected-display {
-            background-color: var(--tg-theme-secondary-bg-color, #333);
-            padding: 15px;
-            border-radius: 8px;
+        .winning-display {
             text-align: center;
-            margin: 10px 0;
-            border: 2px solid var(--tg-theme-button-color, #50B848);
+            margin: 15px 0;
         }
 
-        .selected-label {
+        .winning-label {
             font-size: 14px;
             color: var(--tg-theme-hint-color, #999);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
-        .selected-number {
-            font-size: 32px;
+        .winning-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #FFFDD0;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #333;
+        }
+
+        .winning-number {
+            font-size: 36px;
             font-weight: bold;
-            color: var(--tg-theme-button-color, #50B848);
+            color: #000;
         }
     </style>
 </head>
@@ -127,10 +135,12 @@
             </div>
             <div>Players: <span id="player-count">0</span></div>
         </div>
-                <!-- Add this after the total-pot div -->
-        <div class="selected-display">
-            <div class="selected-label">Selected Number</div>
-            <div class="selected-number" id="selected-number-display">-</div>
+        <!-- Add this after the total-pot div -->
+        <div class="winning-display">
+            <div class="winning-label">Winning Number</div>
+            <div class="winning-circle">
+                <div class="winning-number" id="winning-number-display">-</div>
+            </div>
         </div>
 
         <div class="number-grid">
