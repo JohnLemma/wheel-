@@ -96,6 +96,26 @@
         .place-bet:disabled {
             opacity: 0.5;
         }
+        .selected-display {
+            background-color: var(--tg-theme-secondary-bg-color, #333);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+            border: 2px solid var(--tg-theme-button-color, #50B848);
+        }
+
+        .selected-label {
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #999);
+            margin-bottom: 5px;
+        }
+
+        .selected-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #50B848);
+        }
     </style>
 </head>
 <body>
@@ -106,6 +126,11 @@
                 <span id="pot-amount">0</span> birr
             </div>
             <div>Players: <span id="player-count">0</span></div>
+        </div>
+                <!-- Add this after the total-pot div -->
+        <div class="selected-display">
+            <div class="selected-label">Selected Number</div>
+            <div class="selected-number" id="selected-number-display">-</div>
         </div>
 
         <div class="number-grid">
@@ -142,7 +167,7 @@
         document.documentElement.style.setProperty('--tg-theme-button-color', tg.buttonColor);
         document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.buttonTextColor);
 
-        // Handle number selection
+                // Update the number selection handler
         document.querySelectorAll('.number-button').forEach(button => {
             button.addEventListener('click', () => {
                 // Remove previous selection
@@ -153,11 +178,21 @@
                 button.classList.add('selected');
                 selectedNumber = button.dataset.number;
                 
+                // Update display
+                document.getElementById('selected-number-display').textContent = selectedNumber;
+                
                 // Enable bet button
                 document.getElementById('place-bet').disabled = false;
             });
         });
-
+        // Add to the resetRound function
+        function resetRound() {
+            selectedNumber = null;
+            document.getElementById('selected-number-display').textContent = '-';
+            document.querySelectorAll('.number-button').forEach(btn => 
+                btn.classList.remove('selected'));
+            document.getElementById('place-bet').disabled = true;
+        }
         // Handle bet placement
         document.getElementById('place-bet').addEventListener('click', () => {
             if (selectedNumber) {
